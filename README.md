@@ -99,6 +99,32 @@
 - DBus interface.
 - Upload to Imgur.
 
+## FlameshotAI variant (OCR)
+
+This fork ships a co-installable variant, `flameshot-ai`, that adds an **OCR**
+button to the capture toolbar. Clicking it runs `rapidocr` (with `paddleocr`
+and `tesseract` as fallbacks), copies the recognized text to the clipboard and
+closes the editor. The stock `flameshot` package is unchanged and can be
+installed alongside it.
+
+Build the AI variant with CMake:
+
+```bash
+cmake -S . -B build-ai \
+  -DFLAMESHOT_APP_NAME=flameshotai \
+  -DFLAMESHOT_DISPLAY_NAME=FlameshotAI \
+  -DFLAMESHOT_DBUS_NAME=org.flameshotai.FlameshotAI \
+  -DUSE_KDSINGLEAPPLICATION=OFF \
+  -DDISABLE_UPDATE_CHECKER=ON
+cmake --build build-ai -j$(nproc)
+```
+
+Or build a Debian package:
+
+```bash
+./scripts/build-deb-flameshotai.sh   # produces dist/flameshot-ai_*.deb
+```
+
 ## Usage
 
 Executing the command `flameshot` without parameters will launch a running

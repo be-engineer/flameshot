@@ -331,6 +331,11 @@ QVariant ButtonList::process(const QVariant& val)
 {
     auto intButtons = val.value<QList<int>>();
     auto buttons = ButtonList::fromIntList(intButtons);
+    // shortcut: configs saved before OCR existed stay valid, add it back so
+    // the button is visible without touching the saved button list
+    if (!buttons.contains(CaptureTool::TYPE_OCR)) {
+        buttons << CaptureTool::TYPE_OCR;
+    }
     sortButtons(buttons);
     return QVariant::fromValue(buttons);
 }

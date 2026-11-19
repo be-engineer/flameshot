@@ -730,6 +730,34 @@ Please solve them manually in the configuration file.</source>
     </message>
 </context>
 <context>
+    <name>OcrTool</name>
+    <message>
+        <location filename="../../src/tools/ocr/ocrtool.cpp" line="52"/>
+        <source>OCR</source>
+        <translation>OCR</translation>
+    </message>
+    <message>
+        <location filename="../../src/tools/ocr/ocrtool.cpp" line="59"/>
+        <source>Extract text and copy it to clipboard</source>
+        <translation>提取文字并复制到剪贴板</translation>
+    </message>
+    <message>
+        <location filename="../../src/tools/ocr/ocrtool.cpp" line="132"/>
+        <source>Could not save capture.</source>
+        <translation>无法保存截图。</translation>
+    </message>
+    <message>
+        <location filename="../../src/tools/ocr/ocrtool.cpp" line="144"/>
+        <source>No text found. Install rapidocr, paddleocr or tesseract.</source>
+        <translation>未识别到文字。请安装 rapidocr、paddleocr 或 tesseract。</translation>
+    </message>
+    <message>
+        <location filename="../../src/tools/ocr/ocrtool.cpp" line="149"/>
+        <source>Text copied to clipboard</source>
+        <translation>文字已复制到剪贴板</translation>
+    </message>
+</context>
+<context>
     <name>DBusUtils</name>
     <message>
         <source>Unable to connect via DBus</source>

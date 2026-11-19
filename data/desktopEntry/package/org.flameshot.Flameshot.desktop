@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=Flameshot
-Name[zh_CN]=火焰截图
+Name=@FLAMESHOT_DISPLAY_NAME@
+Name[zh_CN]=@FLAMESHOT_DISPLAY_NAME_ZH@
 GenericName=Screenshot tool
 GenericName[zh_CN]=屏幕截图工具
 GenericName[pl]=Zrzuty ekranu
@@ -38,15 +38,15 @@ Keywords[es]=flameshot;screenshot;capture;shutter;captura;
 Keywords[de]=flameshot;screenshot;Bildschirmfoto;Aufnahme;
 Keywords[pt_BR]=flameshot;screenshot;captura de tela;captura;shutter;
 Exec=@LAUNCHER_EXECUTABLE@
-Icon=org.flameshot.Flameshot
+Icon=@FLAMESHOT_DBUS_NAME@
 Terminal=false
 Type=Application
 Categories=Graphics;
 StartupNotify=false
-StartupWMClass=flameshot
+StartupWMClass=@FLAMESHOT_APP_NAME@
 Actions=Configure;Capture;Launcher;
 X-DBUS-StartupType=Unique
-X-DBUS-ServiceName=org.flameshot.Flameshot
+X-DBUS-ServiceName=@FLAMESHOT_DBUS_NAME@
 X-KDE-DBUS-Restricted-Interfaces=org.kde.kwin.Screenshot,org.kde.KWin.ScreenShot2
 
 [Desktop Action Configure]

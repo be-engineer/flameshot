@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.22)
 # cmake_policy(SET CMP0076 OLD)
 
 set(FLAMESHOT_VERSION 15.0.0)
+set(FLAMESHOT_VERSION_SUFFIX
+  ""
+  CACHE STRING "Suffix appended to the displayed version, e.g. -ai")
 
 # Flameshot-org
 set(GIT_API_URL "https://api.github.com/repos/flameshot-org/flameshot/releases/latest")
@@ -10,7 +13,20 @@ project(
   flameshot
   VERSION ${FLAMESHOT_VERSION}
   LANGUAGES CXX)
-set(PROJECT_NAME_CAPITALIZED "Flameshot")
+
+# Branding. Override these to build a co-installable variant, e.g. the
+# FlameshotAI build: -DFLAMESHOT_APP_NAME=flameshotai
+# -DFLAMESHOT_DISPLAY_NAME=FlameshotAI
+# -DFLAMESHOT_DBUS_NAME=org.flameshotai.FlameshotAI
+set(FLAMESHOT_APP_NAME "flameshot" CACHE STRING "Binary, config and data name")
+set(FLAMESHOT_DISPLAY_NAME "Flameshot" CACHE STRING "Human readable name")
+set(FLAMESHOT_DISPLAY_NAME_ZH
+  "火焰截图"
+  CACHE STRING "Chinese human readable name")
+set(FLAMESHOT_DBUS_NAME
+  "org.flameshot.Flameshot"
+  CACHE STRING "D-Bus service and desktop entry name")
+set(PROJECT_NAME_CAPITALIZED "${FLAMESHOT_DISPLAY_NAME}")
 
 include(FetchContent)
 #Must be set before fetching external content!

@@ -82,3 +82,5 @@ result-*
 
 # direnv
 .direnv
+pic/
+dist/

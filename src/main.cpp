@@ -94,7 +94,7 @@ int requestCaptureAndWait(const CaptureRequest& req)
 
 QSharedMemory* guiMutexLock()
 {
-    QString key = "org.flameshot.Flameshot-" APP_VERSION;
+    QString key = QStringLiteral(APP_DBUS_NAME) + "-" APP_VERSION;
     auto* shm = new QSharedMemory(key);
 #ifdef Q_OS_UNIX
     // Destroy shared memory if the last instance crashed on Unix
@@ -221,8 +221,8 @@ int main(int argc, char* argv[])
     qRegisterMetaType<QList<int>>();
 
     QCoreApplication::setApplicationVersion(APP_VERSION);
-    QCoreApplication::setApplicationName(QStringLiteral("flameshot"));
-    QCoreApplication::setOrganizationName(QStringLiteral("flameshot"));
+    QCoreApplication::setApplicationName(QStringLiteral(APP_NAME));
+    QCoreApplication::setOrganizationName(QStringLiteral(APP_NAME));
     QNetworkProxyFactory::setUseSystemConfiguration(true);
 
     // no arguments, just launch Flameshot
@@ -236,7 +236,7 @@ int main(int argc, char* argv[])
         auto signalDaemon = SignalDaemon();
 #endif
         auto kdsa =
-          KDSingleApplication(QStringLiteral("org.flameshot.Flameshot"));
+          KDSingleApplication(QStringLiteral(APP_DBUS_NAME));
 
         if (!kdsa.isPrimaryInstance() &&
             !ConfigHandler().allowMultipleGuiInstances()) {
@@ -267,7 +267,7 @@ int main(int argc, char* argv[])
               << QObject::tr("Unable to connect via DBus");
         }
         dbus.registerObject(QStringLiteral("/"), c);
-        dbus.registerService(QStringLiteral("org.flameshot.Flameshot"));
+        dbus.registerService(QStringLiteral(APP_DBUS_NAME));
 #endif
         return qApp->exec();
     }

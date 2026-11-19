@@ -77,6 +77,14 @@ endif ()
 
 add_executable(Flameshot::flameshot ALIAS flameshot)
 
+# Co-installable branding: the CMake target stays "flameshot", but the
+# installed binary, config dir and D-Bus name follow FLAMESHOT_APP_NAME.
+set_target_properties(flameshot PROPERTIES OUTPUT_NAME "${FLAMESHOT_APP_NAME}")
+target_compile_definitions(flameshot PRIVATE
+    APP_NAME="${FLAMESHOT_APP_NAME}"
+    APP_DISPLAY_NAME="${FLAMESHOT_DISPLAY_NAME}"
+    APP_DBUS_NAME="${FLAMESHOT_DBUS_NAME}")
+
 if(FLAMESHOT_ICON)
   target_compile_definitions(flameshot PUBLIC FLAMESHOT_ICON="${FLAMESHOT_ICON}")
 endif()
@@ -298,7 +306,7 @@ else()
 endif ()
 
 target_compile_definitions(flameshot PRIVATE APP_PREFIX="${CMAKE_INSTALL_PREFIX}")
-target_compile_definitions(flameshot PRIVATE APP_VERSION="v${PROJECT_VERSION}")
+target_compile_definitions(flameshot PRIVATE APP_VERSION="v${PROJECT_VERSION}${FLAMESHOT_VERSION_SUFFIX}")
 #target_compile_definitions(flameshot PRIVATE QAPPLICATION_CLASS=QApplication)
 target_compile_definitions(flameshot PRIVATE FLAMESHOT_APP_VERSION_URL="${GIT_API_URL}")
 # Enable easier debugging of screenshot capture mode
@@ -326,9 +334,9 @@ include(GNUInstallDirs)
 set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/Flameshot)
 
 if(USE_LAUNCHER_ABSOLUTE_PATH)
-    set(LAUNCHER_EXECUTABLE "${CMAKE_INSTALL_FULL_BINDIR}/flameshot")
+    set(LAUNCHER_EXECUTABLE "${CMAKE_INSTALL_FULL_BINDIR}/${FLAMESHOT_APP_NAME}")
 else()
-    set(LAUNCHER_EXECUTABLE "flameshot")
+    set(LAUNCHER_EXECUTABLE "${FLAMESHOT_APP_NAME}")
 endif()
 
 # Install binary
@@ -343,56 +351,63 @@ endif ()
 
 if (UNIX)
     # Install desktop files, completion and dbus files
+    # Names follow FLAMESHOT_APP_NAME / FLAMESHOT_DBUS_NAME so that a branded
+    # build can be installed next to the stock Flameshot package.
+    set(BRANDED_DESKTOP_NAME "${FLAMESHOT_DBUS_NAME}")
+
     configure_file(${CMAKE_SOURCE_DIR}/data/desktopEntry/package/org.flameshot.Flameshot.desktop
-            ${CMAKE_CURRENT_BINARY_DIR}/share/applications/org.flameshot.Flameshot.desktop @ONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/applications/${BRANDED_DESKTOP_NAME}.desktop @ONLY)
 
     configure_file(${CMAKE_SOURCE_DIR}/data/appdata/org.flameshot.Flameshot.metainfo.xml
-            ${CMAKE_CURRENT_BINARY_DIR}/share/metainfo/org.flameshot.Flameshot.metainfo.xml COPYONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/metainfo/${BRANDED_DESKTOP_NAME}.metainfo.xml COPYONLY)
 
     configure_file(${CMAKE_SOURCE_DIR}/data/shell-completion/flameshot.bash
-            ${CMAKE_CURRENT_BINARY_DIR}/share/bash-completion/completions/flameshot COPYONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/bash-completion/completions/${FLAMESHOT_APP_NAME} COPYONLY)
 
     configure_file(${CMAKE_SOURCE_DIR}/data/shell-completion/flameshot.zsh
-            ${CMAKE_CURRENT_BINARY_DIR}/share/zsh/site-functions/_flameshot COPYONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/zsh/site-functions/_${FLAMESHOT_APP_NAME} COPYONLY)
 
     configure_file(${CMAKE_SOURCE_DIR}/data/shell-completion/flameshot.fish
-            ${CMAKE_CURRENT_BINARY_DIR}/share/fish/vendor_completions.d/flameshot.fish COPYONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/fish/vendor_completions.d/${FLAMESHOT_APP_NAME}.fish COPYONLY)
 
     configure_file(${CMAKE_SOURCE_DIR}/data/dbus/org.flameshot.Flameshot.xml
-            ${CMAKE_CURRENT_BINARY_DIR}/share/dbus-1/interfaces/org.flameshot.Flameshot.xml COPYONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/dbus-1/interfaces/${BRANDED_DESKTOP_NAME}.xml COPYONLY)
 
     configure_file(${CMAKE_SOURCE_DIR}/data/dbus/org.flameshot.Flameshot.service.in
-            ${CMAKE_CURRENT_BINARY_DIR}/share/dbus-1/services/org.flameshot.Flameshot.service)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/dbus-1/services/${BRANDED_DESKTOP_NAME}.service)
 
     # Install man pages
     configure_file(${CMAKE_SOURCE_DIR}/data/man/man1/flameshot.1
-            ${CMAKE_CURRENT_BINARY_DIR}/share/man/man1/flameshot.1 COPYONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/man/man1/${FLAMESHOT_APP_NAME}.1 COPYONLY)
 
-    # Install Icons
+    # Install icons under the branded name
+    set(ICON_NAME "${BRANDED_DESKTOP_NAME}")
     configure_file(${CMAKE_SOURCE_DIR}/data/img/hicolor/48x48/apps/org.flameshot.Flameshot.png
-            ${CMAKE_CURRENT_BINARY_DIR}/share/icons/hicolor/48x48/apps/org.flameshot.Flameshot.png COPYONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/icons/hicolor/48x48/apps/${ICON_NAME}.png COPYONLY)
 
     configure_file(${CMAKE_SOURCE_DIR}/data/img/hicolor/128x128/apps/org.flameshot.Flameshot.png
-            ${CMAKE_CURRENT_BINARY_DIR}/share/icons/hicolor/128x128/apps/org.flameshot.Flameshot.png COPYONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/icons/hicolor/128x128/apps/${ICON_NAME}.png COPYONLY)
 
     configure_file(${CMAKE_SOURCE_DIR}/data/img/hicolor/scalable/apps/org.flameshot.Flameshot.svg
-            ${CMAKE_CURRENT_BINARY_DIR}/share/icons/hicolor/scalable/apps/org.flameshot.Flameshot.svg COPYONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/icons/hicolor/scalable/apps/${ICON_NAME}.svg COPYONLY)
 
-    # Install icon with both names
+    # Keep a copy under the plain application name too (used by themed icons
+    # and desktop notifications).
+    set(APP_ICON_NAME "${FLAMESHOT_APP_NAME}")
     configure_file(${CMAKE_SOURCE_DIR}/data/img/hicolor/48x48/apps/flameshot.png
-            ${CMAKE_CURRENT_BINARY_DIR}/share/icons/hicolor/48x48/apps/flameshot.png COPYONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/icons/hicolor/48x48/apps/${APP_ICON_NAME}.png COPYONLY)
 
     configure_file(${CMAKE_SOURCE_DIR}/data/img/hicolor/128x128/apps/flameshot.png
-            ${CMAKE_CURRENT_BINARY_DIR}/share/icons/hicolor/128x128/apps/flameshot.png COPYONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/icons/hicolor/128x128/apps/${APP_ICON_NAME}.png COPYONLY)
 
     configure_file(${CMAKE_SOURCE_DIR}/data/img/hicolor/scalable/apps/flameshot.svg
-            ${CMAKE_CURRENT_BINARY_DIR}/share/icons/hicolor/scalable/apps/flameshot.svg COPYONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/share/icons/hicolor/scalable/apps/${APP_ICON_NAME}.svg COPYONLY)
 
     # Install assets
     install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/share/ DESTINATION ${CMAKE_INSTALL_DATAROOTDIR})
 
     # Install Translations
-    install(FILES ${QM_FILES} DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/flameshot/translations)
+    install(FILES ${QM_FILES} DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${FLAMESHOT_APP_NAME}/translations)
 endif ()
 
 # windeployqt

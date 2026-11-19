@@ -69,3 +69,7 @@ target_sources(
           abstracttwopointtool.h
           capturetool.h
           toolfactory.h)
+target_sources(
+  flameshot
+  PRIVATE ocr/ocrtool.cpp
+          ocr/ocrtool.h)

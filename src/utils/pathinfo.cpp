@@ -28,9 +28,9 @@ QStringList PathInfo::translationsPaths()
            // Inside the app bundle: Contents/MacOS/../Resources/translations
            << QDir::cleanPath(binaryPath + "/../Resources/translations")
 #endif
-           << QStringLiteral(APP_PREFIX) + "/share/flameshot/translations"
-           << trPath << QStringLiteral("/usr/share/flameshot/translations")
-           << QStringLiteral("/usr/local/share/flameshot/translations");
+           << QStringLiteral(APP_PREFIX) + "/share/" APP_NAME "/translations"
+           << trPath << QStringLiteral("/usr/share/" APP_NAME "/translations")
+           << QStringLiteral("/usr/local/share/" APP_NAME "/translations");
 #endif
     return QStringList() << trPath;
 }

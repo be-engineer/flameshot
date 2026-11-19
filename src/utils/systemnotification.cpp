@@ -17,7 +17,7 @@
 // the system folder, so instead the absolute path to the
 // icon (saved somewhere in /snap/flameshot/...) is passed
 #ifndef FLAMESHOT_ICON
-#define FLAMESHOT_ICON "flameshot"
+#define FLAMESHOT_ICON APP_NAME
 #endif
 
 SystemNotification::SystemNotification(QObject* parent)

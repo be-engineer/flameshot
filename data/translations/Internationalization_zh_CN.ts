@@ -738,8 +738,8 @@ Please solve them manually in the configuration file.</source>
     </message>
     <message>
         <location filename="../../src/tools/ocr/ocrtool.cpp" line="59"/>
-        <source>Extract text and copy it to clipboard</source>
-        <translation>提取文字并复制到剪贴板</translation>
+        <source>Extract text and save it to a file</source>
+        <translation>提取文字并保存为文件</translation>
     </message>
     <message>
         <location filename="../../src/tools/ocr/ocrtool.cpp" line="132"/>
@@ -753,8 +753,15 @@ Please solve them manually in the configuration file.</source>
     </message>
     <message>
         <location filename="../../src/tools/ocr/ocrtool.cpp" line="149"/>
-        <source>Text copied to clipboard</source>
-        <translation>文字已复制到剪贴板</translation>
+        <source>Could not write %1</source>
+        <translation>无法写入 %1</translation>
+    </message>
+    <message>
+        <location filename="../../src/tools/ocr/ocrtool.cpp" line="157"/>
+        <source>Text saved to %1
+(%2, %3s)</source>
+        <translation>文字已保存到 %1
+（%2，%3 秒）</translation>
     </message>
 </context>
 <context>

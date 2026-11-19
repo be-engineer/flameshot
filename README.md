@@ -103,9 +103,37 @@
 
 This fork ships a co-installable variant, `flameshot-ai`, that adds an **OCR**
 button to the capture toolbar. Clicking it runs `rapidocr` (with `paddleocr`
-and `tesseract` as fallbacks), copies the recognized text to the clipboard and
-closes the editor. The stock `flameshot` package is unchanged and can be
+and `tesseract` as fallbacks) and saves the recognized text to a `.txt` file
+next to your screenshots. The stock `flameshot` package is unchanged and can be
 installed alongside it.
+
+![OCR button in the capture toolbar](docs/images/ocr_button.png)
+
+### OCR engine setup
+
+An OCR engine must be on `PATH`. `rapidocr` is recommended; it needs
+`onnxruntime` **inside its own environment**, otherwise it exits with
+`ImportError: ... onnxruntime`:
+
+```bash
+# pipx (recommended)
+pipx install rapidocr
+pipx inject rapidocr onnxruntime
+
+# plain pip
+pip install --user rapidocr onnxruntime
+```
+
+`tesseract` also works (`sudo apt install tesseract-ocr tesseract-ocr-chi-sim`)
+but is less accurate on screenshots. Verify the engine standalone before using
+the OCR button:
+
+```bash
+rapidocr -img /path/to/image.png   # should print the recognized lines
+```
+
+If OCR still fails, the error dialog lists each engine's status and the last
+error line (including a `Fix:` hint for broken Python environments).
 
 Build the AI variant with CMake:
 

@@ -75,6 +75,8 @@ private slots:
     void togglePanel();
     void childEnter();
     void childLeave();
+    void enableImagePreview(const QString& imagePath);
+    void disableImagePreview();
 
     void deleteCurrentTool();
 
@@ -180,6 +182,8 @@ private:
     bool m_movingSelection;
     bool m_captureDone;
     bool m_previewEnabled;
+    bool m_imagePreviewEnabled;           // New: Enable static image preview
+    QPixmap m_staticPreviewImage;         // New: Static image for preview
     bool m_adjustmentButtonPressed;
     bool m_configError;
     bool m_configErrorResolved;

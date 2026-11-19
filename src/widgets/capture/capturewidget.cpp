@@ -38,6 +38,8 @@
 #include <QScreen>
 #include <QShortcut>
 #include <QWindow>
+#include <QPixmap>
+#include <QFileInfo>
 
 #if !defined(DISABLE_UPDATE_CHECKER)
 #include "widgets/updatenotificationwidget.h"
@@ -60,6 +62,7 @@ CaptureWidget::CaptureWidget(const CaptureRequest& req,
   , m_mouseIsClicked(false)
   , m_captureDone(false)
   , m_previewEnabled(true)
+  , m_imagePreviewEnabled(false)
   , m_adjustmentButtonPressed(false)
   , m_configError(false)
   , m_configErrorResolved(false)
@@ -772,6 +775,9 @@ void CaptureWidget::paintEvent(QPaintEvent* paintEvent)
     } else if (m_previewEnabled && activeButtonTool() &&
                m_activeButton->tool()->showMousePreview()) {
         m_activeButton->tool()->paintMousePreview(painter, m_context);
+    }
+    if (m_imagePreviewEnabled && !m_staticPreviewImage.isNull()) {
+        painter.drawPixmap(rect(), m_staticPreviewImage);
     }
     if (save)
         painter.restore();
@@ -1988,6 +1994,25 @@ void CaptureWidget::childLeave()
 {
     m_previewEnabled = true;
     updateTool(activeButtonTool());
+}
+
+void CaptureWidget::enableImagePreview(const QString& imagePath)
+{
+    QFileInfo info(imagePath);
+    if (!info.exists()) {
+        m_staticPreviewImage = QPixmap();
+        m_imagePreviewEnabled = false;
+        return;
+    }
+    m_staticPreviewImage = QPixmap(imagePath);
+    m_imagePreviewEnabled = true;
+    update();
+}
+
+void CaptureWidget::disableImagePreview()
+{
+    m_imagePreviewEnabled = false;
+    update();
 }
 
 void CaptureWidget::setCaptureToolObjects(

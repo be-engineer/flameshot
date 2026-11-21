@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// SPDX-FileCopyrightText: 2026 FlameshotAI Contributors
+// SPDX-FileCopyrightText: 2026 FlameshotOCR Contributors
 
 #include "ocrtool.h"
 #include "utils/confighandler.h"

@@ -19,7 +19,7 @@ To help us triage and resolve the issue efficiently, your report must include th
 1. CVSS Vector File: A JSON file generated using the latest CVSS calculator from the [National Vulnerability Database](https://nvd.nist.gov/vuln-metrics/cvss "URL to NIST website that contains CVSS calculators")
 2. Proof of Concept: Functional code or script that demonstrates the exploit
 3. Reproducible Instructions: Clear, step-by-step documentation for replicating the vulnerability
-4. If you have used any software or AI to detect the vulnerability, please disclose that information transparently
+4. If you have used any software or OCR to detect the vulnerability, please disclose that information transparently
 
 **Optional Information**:
 

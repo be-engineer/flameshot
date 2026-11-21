@@ -99,9 +99,9 @@
 - DBus interface.
 - Upload to Imgur.
 
-## FlameshotAI variant (OCR)
+## FlameshotOCR variant (OCR)
 
-This fork ships a co-installable variant, `flameshot-ai`, that adds an **OCR**
+This fork ships a co-installable variant, `flameshot-ocr`, that adds an **OCR**
 button to the capture toolbar. Clicking it runs `rapidocr` (with `paddleocr`
 and `tesseract` as fallbacks) and saves the recognized text to a `.txt` file
 next to your screenshots. The stock `flameshot` package is unchanged and can be
@@ -135,22 +135,22 @@ rapidocr -img /path/to/image.png   # should print the recognized lines
 If OCR still fails, the error dialog lists each engine's status and the last
 error line (including a `Fix:` hint for broken Python environments).
 
-Build the AI variant with CMake:
+Build the OCR variant with CMake:
 
 ```bash
-cmake -S . -B build-ai \
-  -DFLAMESHOT_APP_NAME=flameshotai \
-  -DFLAMESHOT_DISPLAY_NAME=FlameshotAI \
-  -DFLAMESHOT_DBUS_NAME=org.flameshotai.FlameshotAI \
+cmake -S . -B build-ocr \
+  -DFLAMESHOT_APP_NAME=flameshotocr \
+  -DFLAMESHOT_DISPLAY_NAME=FlameshotOCR \
+  -DFLAMESHOT_DBUS_NAME=org.flameshotocr.FlameshotOCR \
   -DUSE_KDSINGLEAPPLICATION=OFF \
   -DDISABLE_UPDATE_CHECKER=ON
-cmake --build build-ai -j$(nproc)
+cmake --build build-ocr -j$(nproc)
 ```
 
 Or build a Debian package:
 
 ```bash
-./scripts/build-deb-flameshotai.sh   # produces dist/flameshot-ai_*.deb
+./scripts/build-deb-flameshotocr.sh   # produces dist/flameshot-ocr_*.deb
 ```
 
 ## Usage
